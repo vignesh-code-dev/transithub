@@ -2,6 +2,7 @@ export const PORTAL_THEME = {
   customer: {
     layoutBg: "bg-[#002A73]",
     text: "text-white",
+    
   },
   driver: {
     layoutBg: "bg-[#1B5E20]",
