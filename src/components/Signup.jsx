@@ -13,7 +13,7 @@ export default function Signup() {
   });
 
   const navigate = useNavigate();
-
+ 
   const handleChange = (e) => {
     setFormData({
       ...formData,
