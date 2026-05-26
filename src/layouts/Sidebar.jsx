@@ -1,183 +1,209 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import {
-  Menu,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
+import { Menu, ChevronDown, ChevronRight, X } from "lucide-react";
 
 export default function Sidebar({
   collapsed,
   setCollapsed,
+  mobileOpen,
+  setMobileOpen,
   menus = [],
+  theme,
 }) {
-
   const [openMenu, setOpenMenu] = useState(null);
 
   const toggleMenu = (id) => {
     setOpenMenu(openMenu === id ? null : id);
   };
 
+  // Close mobile sidebar on pressing Escape
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [setMobileOpen]);
+
+  const sidebarBg = theme?.layoutBg || "bg-[#1565C0]";
+  const sidebarBorder = theme?.border || "border-[#1565C0]";
+  const textColor = theme?.text || "text-white";
+  const activeClass = theme?.activeBg || "bg-[#1976D2]";
+  const hoverClass = theme?.hoverBg || "hover:bg-[#1976D2]/80";
+  const childHoverClass = theme?.childHoverBg || "hover:bg-[#1976D2]/50";
+
   return (
-    <aside
-      className={`
-        h-screen fixed left-0 top-0
-        bg-[#FFC200]
-        text-[#1A1A2E]
-        transition-all duration-300
-        ${collapsed ? "w-16" : "w-60"}
-        flex flex-col
-        shadow-md
-        overflow-y-auto
-      `}
-    >
+    <>
+      {/* MOBILE BACKDROP OVERLAY */}
+      {mobileOpen && (
+        <div
+          onClick={() => setMobileOpen(false)}
+          className="fixed inset-0 bg-black/40 z-30 lg:hidden"
+        />
+      )}
 
-      {/* Header */}
-      <div className="flex items-center justify-between p-4">
+      <aside
+        className={`
+          fixed
+          top-16
+          left-0
+          h-[calc(100vh-64px)]
+          transition-all duration-300
+          overflow-y-auto
+          z-40
+          border-r
+          ${sidebarBg}
+          ${sidebarBorder}
+          ${collapsed ? "w-16" : "w-60"}
+          lg:translate-x-0
+          ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
+        {/* Responsive Desktop Switch Panel */}
+        <div className={`flex items-center justify-between p-3 border-b ${sidebarBorder}`}>
+          <span
+            className={`text-xs font-bold tracking-wider uppercase ${textColor} ${collapsed ? "hidden" : "block"}`}
+          >
+            Navigation
+          </span>
 
-        {!collapsed && (
-          <h1 className="font-bold text-lg">
-            TransitHub
-          </h1>
-        )}
+          {/* Mobile close trigger */}
+          <button
+            className={`lg:hidden p-1 rounded-lg transition ${textColor} ${hoverClass}`}
+            onClick={() => setMobileOpen(false)}
+          >
+            <X size={20} />
+          </button>
 
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          <Menu size={22} />
-        </button>
-      </div>
+          {/* Desktop collapse control toggle */}
+          <button
+            className={`hidden lg:block p-1 rounded-lg transition ${textColor} ${hoverClass}`}
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            <Menu size={20} />
+          </button>
+        </div>
 
-      {/* Menus */}
-      <nav className="flex flex-col gap-1 mt-2">
+        {/* Main Nav Tree */}
+        <nav className="px-2 py-4 pb-6">
+          {menus.map((item) => {
+            const Icon = item.icon;
+            const hasChildren = item.children && item.children.length > 0;
 
-        {menus.map((item) => {
+            return (
+              <div key={item.id} className="mb-1">
+                {/* Parent Row Container */}
+                {hasChildren ? (
+                  <button
+                    onClick={() => toggleMenu(item.id)}
+                    className={`
+                      w-full
+                      flex
+                      items-center
+                      justify-between
+                      px-3
+                      py-3
+                      rounded-r-xl
+                      transition-all
+                      border-l-4
+                      ${textColor}
+                      ${
+                        openMenu === item.id
+                          ? `${activeClass} border-white font-semibold`
+                          : `border-transparent ${hoverClass}`
+                      }
+                    `}
+                  >
+                    <div className="flex items-center">
+                      <Icon
+                        size={20}
+                        className={collapsed ? "mx-auto" : "mr-3"}
+                      />
+                      {!collapsed && (
+                        <span className="font-medium text-sm">
+                          {item.label}
+                        </span>
+                      )}
+                    </div>
 
-          const Icon = item.icon;
-          const hasChildren = item.children;
-
-          return (
-            <div key={item.id}>
-
-              {/* Parent Menu */}
-              {hasChildren ? (
-
-                <button
-                  onClick={() => toggleMenu(item.id)}
-                  className="
-                    w-full
-                    flex items-center justify-between
-                    px-4 py-3
-                    hover:bg-[#E6AD00]/70
-                    transition-all
-                  "
-                >
-
-                  <div className="flex items-center">
-
+                    {!collapsed &&
+                      (openMenu === item.id ? (
+                        <ChevronDown size={16} />
+                      ) : (
+                        <ChevronRight size={16} />
+                      ))}
+                  </button>
+                ) : (
+                  <NavLink
+                    to={item.path}
+                    onClick={() => setMobileOpen(false)}
+                    className={({ isActive }) => `
+                      flex
+                      items-center
+                      px-3
+                      py-3
+                      rounded-r-xl
+                      transition-all
+                      border-l-4
+                      ${textColor}
+                      ${
+                        isActive
+                          ? `${activeClass} border-white font-bold`
+                          : `border-transparent ${hoverClass}`
+                      }
+                    `}
+                  >
                     <Icon
                       size={20}
-                      className={`${collapsed ? "mx-auto" : "mr-3"}`}
+                      className={collapsed ? "mx-auto" : "mr-3"}
                     />
-
                     {!collapsed && (
-                      <span className="font-medium text-left">
-                        {item.label}
-                      </span>
+                      <span className="text-sm font-medium">{item.label}</span>
                     )}
+                  </NavLink>
+                )}
 
+                {/* Sub-menu Item Children Drawer */}
+                {hasChildren && openMenu === item.id && !collapsed && (
+                  <div className={`ml-4 mt-1 flex flex-col gap-1 border-l pl-2 ${sidebarBorder}`}>
+                    {item.children.map((child) => {
+                      const ChildIcon = child.icon;
+
+                      return (
+                        <NavLink
+                          key={child.id}
+                          to={child.path}
+                          onClick={() => setMobileOpen(false)}
+                          className={({ isActive }) => `
+                            flex
+                            items-center
+                            px-3
+                            py-2
+                            rounded-r-xl
+                            text-xs
+                            transition-all
+                            border-l-4
+                            ${textColor}
+                            ${
+                              isActive
+                                ? `${activeClass} border-white font-bold`
+                                : `border-transparent ${childHoverClass}`
+                            }
+                          `}
+                        >
+                          <ChildIcon size={16} className="mr-2" />
+                          <span>{child.label}</span>
+                        </NavLink>
+                      );
+                    })}
                   </div>
-
-                  {!collapsed && (
-                    openMenu === item.id
-                      ? <ChevronDown size={18} />
-                      : <ChevronRight size={18} />
-                  )}
-
-                </button>
-
-              ) : (
-
-                <NavLink
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `
-                    flex items-center
-                    px-4 py-3
-                    transition-all
-
-                    ${
-                      isActive
-                        ? "bg-[#E6AD00] border-l-4 border-white"
-                        : "hover:bg-[#E6AD00]/70"
-                    }
-                    `
-                  }
-                >
-
-                  <Icon
-                    size={20}
-                    className={`${collapsed ? "mx-auto" : "mr-3"}`}
-                  />
-
-                  {!collapsed && (
-                    <span className="font-medium">
-                      {item.label}
-                    </span>
-                  )}
-
-                </NavLink>
-              )}
-
-              {/* Children */}
-              {hasChildren && openMenu === item.id && !collapsed && (
-
-                <div className="ml-4 mt-1 flex flex-col gap-1">
-
-                  {item.children.map((child) => {
-
-                    const ChildIcon = child.icon;
-
-                    return (
-                      <NavLink
-                        key={child.id}
-                        to={child.path}
-                        className={({ isActive }) =>
-                          `
-                          flex items-center
-                          px-4 py-3 rounded-l-xl
-                          transition-all text-sm
-
-                          ${
-                            isActive
-                              ? "bg-[#E6AD00] border-l-4 border-white"
-                              : "hover:bg-[#E6AD00]/60"
-                          }
-                          `
-                        }
-                      >
-
-                        <ChildIcon
-                          size={18}
-                          className="mr-3"
-                        />
-
-                        <span>
-                          {child.label}
-                        </span>
-
-                      </NavLink>
-                    );
-                  })}
-
-                </div>
-              )}
-
-            </div>
-          );
-        })}
-
-      </nav>
-    </aside>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }
