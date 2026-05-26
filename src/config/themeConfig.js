@@ -8,7 +8,7 @@ export const PORTAL_THEME = {
     text: "text-white",
     activeBg: "bg-[#2E7D32]",
   },
-  busOwner: {
+  "bus-owner": {
     layoutBg: "bg-[#1565C0]",
     text: "text-white",
     border: "border-[#1565C0]",

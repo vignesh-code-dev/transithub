@@ -10,6 +10,7 @@ export default function Signup() {
     email: "",
     phone: "",
     password: "",
+    role: "Customer", // டிஃபால்ட்டாக Customer என வைக்கப்பட்டுள்ளது
   });
 
   const navigate = useNavigate();
@@ -42,14 +43,14 @@ export default function Signup() {
 
     localStorage.setItem("transit_users", JSON.stringify(updatedUsers));
 
-    console.log("Signup Data Saved Successfully!");
+    console.log("Signup Data Saved Successfully with Role:", formData.role);
 
-    // after signup redirect login
+    // வெற்றிகரமாக சைன் அப் ஆனதும் லாகின் பக்கத்திற்கு அழைத்துச் செல்லும்
     navigate("/");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 my-10">
       {/* Card */}
       <div className="w-full max-w-md p-8 border border-border rounded-lg shadow-[0_2px_12px_rgba(0,0,0,0.08)] bg-primaryBg">
         {/* Title */}
@@ -64,7 +65,7 @@ export default function Signup() {
         <form onSubmit={handleSignup}>
           {/* Name */}
           <div className="mb-4">
-            <label className="block text-[13px] text-sans font-medium text-heading text-bodyText mb-4">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
               Username
             </label>
             <input
@@ -84,7 +85,7 @@ export default function Signup() {
 
           {/* Email */}
           <div className="mb-4">
-            <label className="block text-[13px] text-sans font-medium text-heading text-bodyText mb-4">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
               Email
             </label>
             <input
@@ -104,7 +105,7 @@ export default function Signup() {
 
           {/* Phone */}
           <div className="mb-4">
-            <label className="block text-[13px] text-sans font-medium text-heading text-bodyText mb-4">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
               Phone
             </label>
             <input
@@ -122,9 +123,35 @@ export default function Signup() {
             />
           </div>
 
+          {/* சேர்க்கப்பட்ட புதிய பகுதி: Role Selection Dropdown */}
+          <div className="mb-4">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
+              Select Role
+            </label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className={`
+                w-full px-4 py-3 rounded border bg-white text-bodyText outline-none transition cursor-pointer
+                focus:border-brand focus:border-2 focus:shadow-[0_0_0_3px_rgba(255,194,0,0.2)]
+                ${formData.role ? "bg-inputfield border-1 border-brand" : ""}
+              `}
+              required
+            >
+              <option value="Customer">Customer (Passenger)</option>
+              <option value="Bus Travels Owner">BusOwner</option>
+              <option value="Driver">Driver</option>
+              <option value="Travels Owner">TravelsOwner</option>
+              <option value="Commercial Owner">CommercialOwner</option>
+              <option value="Admin">Admin</option>
+              <option value="SuperAdmin">SuperAdmin</option>
+            </select>
+          </div>
+
           {/* Password */}
-          <div className="mb-4 relative">
-            <label className="block text-[13px] text-sans font-medium text-heading text-bodyText mb-4">
+          <div className="mb-6 relative">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
               Password
             </label>
             <div className="relative">

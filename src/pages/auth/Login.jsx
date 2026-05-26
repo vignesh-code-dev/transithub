@@ -21,7 +21,7 @@ export default function Login() {
     });
   };
 
-  // Simple validation
+  // எளிய சரிபார்ப்பு (Simple validation)
   const validate = () => {
     let newErrors = {};
 
@@ -47,6 +47,7 @@ export default function Login() {
     const existingUsers =
       JSON.parse(localStorage.getItem("transit_users")) || [];
 
+    // மின்னஞ்சல் அல்லது தொலைபேசி எண் மூலமாக பயனரைத் தேடுதல்
     const foundUser = existingUsers.find(
       (user) => user.email === formData.email || user.phone === formData.email,
     );
@@ -64,14 +65,26 @@ export default function Login() {
       setErrors(newErrors);
       return;
     }
+
     console.log("Login Success! User Details:", foundUser);
     localStorage.setItem("currentUser", JSON.stringify(foundUser));
 
-    const fakeRole = "customer";
-    if (fakeRole === "admin") navigate("/admin");
-    else if (fakeRole === "owner") navigate("/owner");
-    else navigate("/Dashboard");
+    // மாற்றியமைக்கப்பட்ட பகுதி: லோக்கல் ஸ்டோரேஜில் இருந்து பயனரின் உண்மையான ரோல் எடுக்கப்படுகிறது
+    const userRole = foundUser.role; 
+
+    // ரோல் வாரியாக பக்கங்களுக்கு அழைத்துச் செல்லுதல் (Role-based conditional navigation)
+    if (userRole === "Admin") {
+      navigate("/admin");
+    } else if (userRole === "Bus Travels Owner") {
+      navigate("/bus-owner/dashboard"); // பஸ் ஓனருக்கான புதிய Nested Route பாதை
+    } else if (userRole === "Driver") {
+      navigate("/driver/dashboard");
+    } else {
+      // டிஃபால்ட்டாக Customer அல்லது இதர பயனர்கள் /dashboard பக்கத்திற்குச் செல்வார்கள்
+      navigate("/dashboard"); 
+    }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-primaryBg px-4 font-sans">
       {/* Card */}
@@ -86,7 +99,7 @@ export default function Login() {
         <form onSubmit={handleLogin} className="space-y-5">
           {/* Email */}
           <div>
-            <label className="block text-[13px] text-sans font-medium text-heading text-bodyText mb-4">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
               Email / Phone
             </label>
 
@@ -111,7 +124,7 @@ export default function Login() {
 
           {/* Password */}
           <div>
-            <label className="block text-[13px] text-sans font-medium text-heading text-bodyText mb-4">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
               Password
             </label>
 

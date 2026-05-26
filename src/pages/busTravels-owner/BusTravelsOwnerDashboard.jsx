@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Layout from "../../layouts/Layout";
-import { busTravelsOwnerMenu } from "../../config/busTravelsOwnerMenu";
 import {
   Bus,
   Ticket,
@@ -30,6 +28,28 @@ export default function BusTravelsOwnerDashboard() {
     { route: "Trichy", revenue: 21000 },
   ];
 
+  // ரூட் வாரியாக பேருந்துகளின் விவரங்கள்
+  const fleetDetails = {
+    active: [
+      { route: "Chennai → Kovai", count: 12 },
+      { route: "Trichy → Chennai", count: 10 },
+      { route: "Madurai → Salem", count: 10 },
+      { route: "Kovai → Bengaluru", count: 10 },
+    ],
+    inService: [
+      { route: "Chennai → Kovai", count: 10 },
+      { route: "Trichy → Chennai", count: 9 },
+      { route: "Madurai → Salem", count: 9 },
+      { route: "Kovai → Bengaluru", count: 8 },
+    ],
+    inMaintenance: [
+      { route: "Chennai → Kovai", count: 2 },
+      { route: "Trichy → Chennai", count: 1 },
+      { route: "Madurai → Salem", count: 1 },
+      { route: "Kovai → Bengaluru", count: 2 },
+    ],
+  };
+
   const [pendingActions, setPendingActions] = useState([
     {
       id: 1,
@@ -55,7 +75,6 @@ export default function BusTravelsOwnerDashboard() {
     console.log(
       `Executing operational review flow context for task identifier: ${id}`,
     );
-    // State clearing array mutation logic mimic
     setPendingActions((prev) => prev.filter((action) => action.id !== id));
   };
 
@@ -65,7 +84,7 @@ export default function BusTravelsOwnerDashboard() {
   };
 
   return (
-    <Layout menus={busTravelsOwnerMenu} userRole="Bus Travels Owner">
+    <>
       {/* 2. DYNAMIC CONTROLS INTERACTION WRAPPER */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -97,42 +116,89 @@ export default function BusTravelsOwnerDashboard() {
               <Bus size={24} className="text-bodyText" />
             </div>
             <div>
-              <h2 className="text-[16px] leading-6 font-semibold text-heading text-bodyText">
+              <h2 className="text-[16px] leading-6 font-semibold text-bodyText">
                 Fleet Overview
               </h2>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-primaryBg border border-[#E0E0E0] rounded-xl p-4 text-center">
-              <p className="text-[14px] leading-[22px] font-Regular text-sans  text-bodyText  uppercase tracking-wider">
-                Active buses
-              </p>
-              <h3 className="text-2xl font-bold text-[#1A1A2E] mt-1">42</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Active Buses Card */}
+            <div className="bg-primaryBg border border-[#E0E0E0] rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <p className="text-[12px] md:text-[14px] leading-[22px] text-bodyText uppercase tracking-wider text-center">
+                  Active buses
+                </p>
+                <h3 className="text-2xl font-bold text-[#1A1A2E] mt-1 text-center">
+                  42
+                </h3>
+              </div>
+              <div className="mt-3 pt-3 border-t border-gray-100 text-[11px] text-[#5D6D7E] space-y-1">
+                {fleetDetails.active.map((item, idx) => (
+                  <div key={idx} className="flex justify-between font-medium">
+                    <span>{item.route}</span>
+                    <span className="font-bold text-[#1A1A2E]">
+                      {item.count}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="bg-primaryBg border border-emerald-100 rounded-xl p-4 text-center">
-              <p className="text-[14px] leading-[22px] font-Regular text-sans  text-bodyText  uppercase tracking-wider">
-                In Service
-              </p>
-              <h3 className="text-2xl font-bold text-bodyText mt-1">36</h3>
+
+            {/* In Service Card */}
+            <div className="bg-primaryBg border border-emerald-100 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <p className="text-[12px] md:text-[14px] leading-[22px] text-bodyText uppercase tracking-wider text-center">
+                  In Service
+                </p>
+                <h3 className="text-2xl font-bold text-bodyText mt-1 text-center">
+                  36
+                </h3>
+              </div>
+              <div className="mt-3 pt-3 border-t border-emerald-50 text-[11px] text-[#5D6D7E] space-y-1">
+                {fleetDetails.inService.map((item, idx) => (
+                  <div key={idx} className="flex justify-between font-medium">
+                    <span>{item.route}</span>
+                    <span className="font-bold text-emerald-600">
+                      {item.count}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="bg-primaryBg border border-rose-100 rounded-xl p-4 text-center">
-              <p className="text-[14px] leading-[22px] font-Regular text-sans  text-bodyText  uppercase tracking-wider">
-                In Maintenance
-              </p>
-              <h3 className="text-2xl font-bold text-bodyText mt-1">6</h3>
+
+            {/* In Maintenance Card */}
+            <div className="bg-primaryBg border border-rose-100 rounded-xl p-4 flex flex-col justify-between">
+              <div>
+                <p className="text-[12px] md:text-[14px] leading-[22px] text-bodyText uppercase tracking-wider text-center">
+                  In Maintenance
+                </p>
+                <h3 className="text-2xl font-bold text-bodyText mt-1 text-center">
+                  6
+                </h3>
+              </div>
+              <div className="mt-3 pt-3 border-t border-rose-50 text-[11px] text-[#5D6D7E] space-y-1">
+                {fleetDetails.inMaintenance.map((item, idx) => (
+                  <div key={idx} className="flex justify-between font-medium">
+                    <span>{item.route}</span>
+                    <span className="font-bold text-rose-600">
+                      {item.count}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Today's Manifest Metric Container Component */}
+        {/* Today's Bookings Card */}
         <div className="bg-white border border-[#E0E0E0] border-l-4 border-l-[#FFC200] rounded-xl p-6 shadow-sm transition-all hover:shadow-md">
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-brand w-10 h-10 flex items-center justify-center rounded-full">
               <Ticket size={24} className="text-bodyText" />
             </div>
             <div>
-              <h2 className="text-[16px] leading-6 font-semibold text-heading text-bodyText">
+              <h2 className="text-[16px] leading-6 font-semibold text-bodyText">
                 Today's Bookings
               </h2>
             </div>
@@ -140,24 +206,22 @@ export default function BusTravelsOwnerDashboard() {
 
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-primaryBg border border-[#E0E0E0] rounded-xl p-4 text-center">
-              <p className="text-[14px] leading-[22px] font-Regular text-sans  text-bodyText  uppercase tracking-wider">
+              <p className="text-[14px] leading-[22px] text-bodyText uppercase tracking-wider">
                 Today's Bookings
               </p>
               <h3 className="text-2xl font-bold text-[#1A1A2E] mt-1">128</h3>
             </div>
             <div className="bg-primaryBg border border-[#E0E0E0] rounded-xl p-4 text-center">
-              <p className="text-[14px] leading-[22px] font-Regular text-sans  text-bodyText  uppercase tracking-wider">
+              <p className="text-[14px] leading-[22px] text-bodyText uppercase tracking-wider">
                 Seats Filled
               </p>
               <h3 className="text-2xl font-bold text-[#1A1A2E] mt-1">432</h3>
             </div>
             <div className="bg-primaryBg border border-amber-100 rounded-xl p-4 text-center">
-              <p className="text-[14px] leading-[22px] font-Regular text-sans  text-bodyText  uppercase tracking-wider">
+              <p className="text-[14px] leading-[22px] text-bodyText uppercase tracking-wider">
                 Revenue Today
               </p>
-              <h3 className="text-2xl font-bold text-bodyText mt-1">
-                ₹24,500
-              </h3>
+              <h3 className="text-2xl font-bold text-bodyText mt-1">₹24,500</h3>
             </div>
           </div>
         </div>
@@ -165,7 +229,7 @@ export default function BusTravelsOwnerDashboard() {
 
       {/* 4. RECHART ROUTE DIAGRAM & PENDING ACTIONS CONTROL BLOCK */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
-        {/* Revenue Hub Analytics Panel Grid Segment */}
+        {/* Revenue Hub Analytics Panel */}
         <div className="bg-white border border-[#E0E0E0] rounded-xl p-5 shadow-sm lg:col-span-7 flex flex-col justify-between min-h-[350px]">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -213,7 +277,7 @@ export default function BusTravelsOwnerDashboard() {
           </div>
         </div>
 
-        {/* Operational Flow Pending Queue Segment */}
+        {/* Operational Flow Pending Queue */}
         <div className="bg-white border border-[#E0E0E0] rounded-xl p-5 shadow-sm lg:col-span-5 flex flex-col min-h-[350px]">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -222,7 +286,7 @@ export default function BusTravelsOwnerDashboard() {
               </div>
               <div>
                 <h2 className="text-base font-bold text-[#1A1A2E]">
-                  Pending Actions 
+                  Pending Actions
                 </h2>
                 <p className="text-xs text-[#5D6D7E]">
                   Awaiting operational confirmation
@@ -263,19 +327,7 @@ export default function BusTravelsOwnerDashboard() {
 
                   <button
                     onClick={() => handleReviewAction(item.id)}
-                    className="
-                      bg-primaryBus hover:bg-[#1565C0]/90 
-                      hover:bg-[#E6AD00] 
-                      text-[#1A1A2E]
-                      border border-[#E6AD00]
-                      px-3.5 py-2 
-                      rounded-lg 
-                      text-xs font-bold
-                      transition-all
-                      shadow-sm
-                      flex items-center gap-1.5
-                      shrink-0
-                    "
+                    className="bg-primaryBus hover:bg-[#E6AD00] text-[#1A1A2E] border border-[#E6AD00] px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"
                   >
                     Review <ArrowRight size={12} />
                   </button>
@@ -285,6 +337,6 @@ export default function BusTravelsOwnerDashboard() {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

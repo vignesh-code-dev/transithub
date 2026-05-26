@@ -5,6 +5,7 @@ import Layout from "./layouts/Layout";
 import BusTravelsOwnerDashboard from "./pages/busTravels-owner/BusTravelsOwnerDashboard";
 import BusRegistration from "./pages/busTravels-owner/BusRegistration";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import { busTravelsOwnerMenu } from "./config/busTravelsOwnerMenu";
 import "@fontsource/inter";
 import "@fontsource/roboto-mono";
 
@@ -15,14 +16,19 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/layout" element={<Layout></Layout>} />
+
         <Route
-          path="/dashboard"
-          element={<BusTravelsOwnerDashboard></BusTravelsOwnerDashboard>}
-        />
+          path="/bus-owner"
+          element={<Layout menus={busTravelsOwnerMenu} userRole="Bus Travels Owner" />}
+        >
+          <Route path="/bus-owner/dashboard" element={<BusTravelsOwnerDashboard />} />
+
+          <Route path="buses" element={<BusRegistration />} />
+        </Route>
+
         <Route
-          path="/travels-owner/buses"
-          element={<BusRegistration></BusRegistration>}
+          path="*"
+          element={<div className="p-10 font-sans">Page Not Found</div>}
         />
       </Routes>
     </BrowserRouter>
