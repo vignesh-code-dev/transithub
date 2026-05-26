@@ -1,24 +1,25 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import Layout from "./layouts/Layout";
-import BusTravelOwner from "./pages/BusTravelOwner";
-import BusRegistration from "./pages/BusRegistration";
-import "@fontsource/inter";
-import "@fontsource/roboto-mono";
 
+import Layout from "./layouts/Layout";
+
+/* Menu */
+import { customerPortalMenu } from "./config/customer";
+
+/* Customer Portal Pages */
+import Dashboard from "./pages/customerportal/Dashboard";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/layout" element={<Layout></Layout>} />
-        <Route path="/travels-owner/dashboard" element={<BusTravelOwner></BusTravelOwner>} />
-        <Route path="/travels-owner/buses" element={<BusRegistration></BusRegistration>} />
+        <Route
+          path="/"
+          element={
+            <Layout menus={customerPortalMenu}>
+              <Dashboard />
+            </Layout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
