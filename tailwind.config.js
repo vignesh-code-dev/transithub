@@ -18,7 +18,8 @@ module.exports = {
         highlight: "#AED6F1",
         bodyText: "#1A1A2E",
         secondaryText: "#5D6D7E",
-        
+        border: "#E0E0E0",
+
         // Custom colors for form states
         placeholder: "#BDBDBD",
         inputfield: "#FFFDE7",

@@ -18,13 +18,13 @@ export const busTravelsOwnerMenu = [
     id: "dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
-    path: "/travels-owner/dashboard",
+    path: "/dashboard",
   },
 
   // Fleet & Bus Management
   {
-    id: "Bus Entry & Seat Management",
-    label: "Bus Entry & Seat Management",
+    id: "Bus Entry",
+    label: "Bus Entry",
     icon: Bus,
 
     children: [
