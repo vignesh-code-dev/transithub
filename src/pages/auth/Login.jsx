@@ -21,7 +21,7 @@ export default function Login() {
     });
   };
 
-  // Simple validation
+  // எளிய சரிபார்ப்பு (Simple validation)
   const validate = () => {
     let newErrors = {};
 
@@ -44,33 +44,62 @@ export default function Login() {
 
     if (!validate()) return;
 
-    const fakeRole = "customer";
+    const existingUsers =
+      JSON.parse(localStorage.getItem("transit_users")) || [];
 
-    if (fakeRole === "admin") navigate("/admin");
-    else if (fakeRole === "owner") navigate("/owner");
-    else navigate("/customer");
+    // மின்னஞ்சல் அல்லது தொலைபேசி எண் மூலமாக பயனரைத் தேடுதல்
+    const foundUser = existingUsers.find(
+      (user) => user.email === formData.email || user.phone === formData.email,
+    );
+
+    let newErrors = {};
+
+    if (!foundUser) {
+      newErrors.email = "* Invalid email or phone number!";
+      setErrors(newErrors);
+      return;
+    }
+
+    if (foundUser.password !== formData.password) {
+      newErrors.password = "* Invalid password. Please check and try again!";
+      setErrors(newErrors);
+      return;
+    }
+
+    console.log("Login Success! User Details:", foundUser);
+    localStorage.setItem("currentUser", JSON.stringify(foundUser));
+
+    // மாற்றியமைக்கப்பட்ட பகுதி: லோக்கல் ஸ்டோரேஜில் இருந்து பயனரின் உண்மையான ரோல் எடுக்கப்படுகிறது
+    const userRole = foundUser.role; 
+
+    // ரோல் வாரியாக பக்கங்களுக்கு அழைத்துச் செல்லுதல் (Role-based conditional navigation)
+    if (userRole === "Admin") {
+      navigate("/admin");
+    } else if (userRole === "Bus Travels Owner") {
+      navigate("/bus-owner/dashboard"); // பஸ் ஓனருக்கான புதிய Nested Route பாதை
+    } else if (userRole === "Driver") {
+      navigate("/driver/dashboard");
+    } else {
+      // டிஃபால்ட்டாக Customer அல்லது இதர பயனர்கள் /dashboard பக்கத்திற்குச் செல்வார்கள்
+      navigate("/dashboard"); 
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-primaryBg px-4 font-sans">
-      
       {/* Card */}
       <div className="w-full max-w-md p-8 border border-border rounded-lg shadow-[0_2px_12px_rgba(0,0,0,0.08)] bg-primaryBg">
-
         {/* Title */}
         <h1 className="text-[24px] leading-[32px] font-bold text-center text-bodyText mb-2">
           TransitHub
         </h1>
 
-        <p className="text-center text-secondaryText mb-6">
-          Login to continue
-        </p>
+        <p className="text-center text-secondaryText mb-6">Login to continue</p>
 
         <form onSubmit={handleLogin} className="space-y-5">
-
           {/* Email */}
           <div>
-            <label className="block text-[13px] text-sans font-medium text-heading text-bodyText mb-4">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
               Email / Phone
             </label>
 
@@ -89,15 +118,13 @@ export default function Login() {
             />
 
             {errors.email && (
-              <p className="mt-1 text-sm text-error">
-                {errors.email}
-              </p>
+              <p className="mt-1 text-sm text-error">{errors.email}</p>
             )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-[13px] text-sans font-medium text-heading text-bodyText mb-4">
+            <label className="block text-[13px] text-sans font-medium text-bodyText mb-2">
               Password
             </label>
 
@@ -127,9 +154,7 @@ export default function Login() {
             </div>
 
             {errors.password && (
-              <p className="mt-1 text-sm text-error">
-                {errors.password}
-              </p>
+              <p className="mt-1 text-sm text-error">{errors.password}</p>
             )}
           </div>
 
@@ -168,14 +193,10 @@ export default function Login() {
         {/* Signup */}
         <p className="text-center text-secondaryText text-sm">
           Don&apos;t have an account?{" "}
-          <Link
-            to="/signup"
-            className="text-bodyText font-medium"
-          >
+          <Link to="/signup" className="text-bodyText font-medium">
             Sign Up
           </Link>
         </p>
-
       </div>
     </div>
   );

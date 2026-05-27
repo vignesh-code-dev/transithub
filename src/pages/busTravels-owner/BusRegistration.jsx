@@ -1,14 +1,5 @@
 import { useState } from "react";
-import Layout from "../layouts/Layout";
-import { busTravelsOwnerMenu } from "../config/busTravelsOwnerMenu";
-import {
-  Bus,
-  Image,
-  Wifi,
-  Tv,
-  Snowflake,
-  BatteryCharging,
-} from "lucide-react";
+import { Bus, Image, Wifi, Tv, Snowflake, BatteryCharging } from "lucide-react";
 
 export default function BusRegistration() {
   const [formData, setFormData] = useState({
@@ -56,9 +47,7 @@ export default function BusRegistration() {
     if (formData.amenities.includes(value)) {
       setFormData({
         ...formData,
-        amenities: formData.amenities.filter(
-          (item) => item !== value
-        ),
+        amenities: formData.amenities.filter((item) => item !== value),
       });
     } else {
       setFormData({
@@ -84,9 +73,8 @@ export default function BusRegistration() {
   };
 
   return (
-    <Layout menus={busTravelsOwnerMenu}>
+    <>
       <div className="max-w-5xl mx-auto">
-
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-[28px] font-bold text-bodyText">
@@ -100,9 +88,7 @@ export default function BusRegistration() {
 
         {/* Form Card */}
         <div className="bg-white border border-border rounded-2xl shadow-sm p-8">
-
           <form onSubmit={handleSubmit}>
-
             {/* Section Title */}
             <div className="flex items-center gap-3 mb-8">
               <div className="w-12 h-12 rounded-xl bg-[#FFF4CC] flex items-center justify-center">
@@ -122,7 +108,6 @@ export default function BusRegistration() {
 
             {/* Grid Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
               {/* Registration Number */}
               <div>
                 <label className="block text-sm font-medium text-bodyText mb-2">
@@ -168,18 +153,10 @@ export default function BusRegistration() {
                   className="w-full px-4 py-3 rounded-xl border border-border outline-none focus:border-[#FFC200] focus:shadow-[0_0_0_3px_rgba(255,194,0,0.2)] transition bg-white"
                 >
                   <option value="">Select Make</option>
-                  <option value="Ashok Leyland">
-                    Ashok Leyland
-                  </option>
-                  <option value="Tata">
-                    Tata
-                  </option>
-                  <option value="Volvo">
-                    Volvo
-                  </option>
-                  <option value="Bharat Benz">
-                    Bharat Benz
-                  </option>
+                  <option value="Ashok Leyland">Ashok Leyland</option>
+                  <option value="Tata">Tata</option>
+                  <option value="Volvo">Volvo</option>
+                  <option value="Bharat Benz">Bharat Benz</option>
                 </select>
               </div>
 
@@ -212,15 +189,9 @@ export default function BusRegistration() {
                   className="w-full px-4 py-3 rounded-xl border border-border outline-none focus:border-[#FFC200] focus:shadow-[0_0_0_3px_rgba(255,194,0,0.2)] transition bg-white"
                 >
                   <option value="">Select Type</option>
-                  <option value="Sleeper">
-                    Sleeper
-                  </option>
-                  <option value="Semi Sleeper">
-                    Semi Sleeper
-                  </option>
-                  <option value="Seater">
-                    Seater
-                  </option>
+                  <option value="Sleeper">Sleeper</option>
+                  <option value="Semi Sleeper">Semi Sleeper</option>
+                  <option value="Seater">Seater</option>
                 </select>
               </div>
 
@@ -248,7 +219,6 @@ export default function BusRegistration() {
               </label>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-
                 {amenitiesList.map((item) => {
                   const Icon = item.icon;
                   const selected = formData.amenities.includes(item.value);
@@ -262,21 +232,19 @@ export default function BusRegistration() {
                         border rounded-2xl p-4 transition
                         flex flex-col items-center justify-center gap-3
 
-                        ${selected
-                          ? "bg-[#FFFDE7] border-[#FFC200]"
-                          : "border-border hover:border-[#FFC200]"
+                        ${
+                          selected
+                            ? "bg-[#FFFDE7] border-[#FFC200]"
+                            : "border-border hover:border-[#FFC200]"
                         }
                       `}
                     >
                       <Icon size={22} />
 
-                      <span className="text-sm font-medium">
-                        {item.label}
-                      </span>
+                      <span className="text-sm font-medium">{item.label}</span>
                     </button>
                   );
                 })}
-
               </div>
             </div>
 
@@ -322,10 +290,9 @@ export default function BusRegistration() {
                 Save Bus
               </button>
             </div>
-
           </form>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

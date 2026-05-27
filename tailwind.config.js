@@ -10,6 +10,8 @@ module.exports = {
         secondaryText: "#5D6D7E",
         border: "#E0E0E0",
 
+      
+
         // Custom colors for form states
 
         placeholder: "#BDBDBD",
