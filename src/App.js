@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import Layout from "./layouts/Layout";
@@ -16,17 +16,23 @@ import Navigation from "./pages/driver/Navigation";
 import DriverReviews from "./pages/driver/DriverReviews";
 import DriverSupport from "./pages/driver/DriverSupport";
 import { driverMenu } from "./config/driverMenu";
+import Overview from "./pages/driver/Overview";
 
 
 // commercial owner routes
 import CommercialOwnerDashboard from "./pages/commercial-owner/CommercialOwnerDashboard";
 import VehicleManagement from "./pages/commercial-owner/VehicleManagement";
-import RideHistory from "./pages/commercial-owner/RideHistory";
+import RideBookingHistory from "./pages/commercial-owner/RideBookingHistory";
 import DriverAssignment from "./pages/commercial-owner/DriverAssignment";
 import PricingSetup from "./pages/commercial-owner/PricingSetup";
 import Documents from "./pages/commercial-owner/Documents";
 import CommercialSupport from "./pages/commercial-owner/CommercialSupport";
 import { commercialOwnerMenu } from "./config/commercialOwnerMenu";
+import AddVehicle from "./pages/commercial-owner/AddVehicle";
+import Earnings from "./pages/driver/Earnings";
+import Notification from "./pages/driver/Notification";
+import RideHistory from "./pages/driver/RideHistory";
+import ActiveRequests from "./pages/driver/ActiveRequests";
 
 
 
@@ -67,19 +73,32 @@ function App() {
             <Layout
               menus={driverMenu}
               userRole="Driver"
+
             />
           }
         >
 
           <Route
+            index
+            element={<Navigate to="dashboard" replace />}
+          />
+          <Route
             path="dashboard"
             element={<DriverDashboard />}
           />
+          <Route path="dashboard/overview" element={<Overview />} />
+          <Route path="dashboard/earnings" element={<Earnings />} />
+          <Route path="dashboard/notifications" element={<Notification />} />
 
           <Route
             path="ride-requests"
             element={<RideRequests />}
           />
+
+          <Route path="ride-requests/active-requests" element={<ActiveRequests />} />
+          <Route path="ride-requests/ride-history" element={<RideHistory />} />
+
+
 
           <Route
             path="navigation"
@@ -102,7 +121,7 @@ function App() {
 
 
         {/* COMMERCIAL OWNER ROUTES */}
-
+        {/* 
         <Route
           path="/commercial-owner/dashboard"
           element={
@@ -114,6 +133,10 @@ function App() {
             </Layout>
           }
         />
+        <Route
+    index
+    element={<Navigate to="dashboard" replace />}
+  />
 
         <Route
           path="/commercial-owner/vehicles"
@@ -134,7 +157,7 @@ function App() {
               menus={commercialOwnerMenu}
               portal="commercialOwner"
             >
-              <RideHistory />
+              <RideBookingHistory />
             </Layout>
           }
         />
@@ -186,7 +209,62 @@ function App() {
             </Layout>
           }
         />
+        <Route
+  path="/commercial-owner/add-vehicle"
+  element={<AddVehicle />}
+/> */}
 
+
+
+        <Route
+          path="/commercial-owner"
+          element={
+            <Layout
+              menus={commercialOwnerMenu}
+              portal="commercialOwner"
+            />
+          }
+        >
+          <Route
+            index
+            element={<Navigate to="dashboard" replace />}
+          />
+
+          <Route
+            path="dashboard"
+            element={<CommercialOwnerDashboard />}
+          />
+
+          <Route
+            path="vehicles"
+            element={<VehicleManagement />}
+          />
+
+          <Route
+            path="rides"
+            element={<RideBookingHistory />}
+          />
+
+          <Route
+            path="drivers"
+            element={<DriverAssignment />}
+          />
+
+          <Route
+            path="pricing"
+            element={<PricingSetup />}
+          />
+
+          <Route
+            path="documents"
+            element={<Documents />}
+          />
+
+          <Route
+            path="support"
+            element={<CommercialSupport />}
+          />
+        </Route>
 
 
 

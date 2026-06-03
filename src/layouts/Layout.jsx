@@ -10,7 +10,6 @@ export default function Layout({ children, menus = [] }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
-  // URL-ஐ வைத்து தற்போதைய போர்ட்டல் எது என்று கண்டறிதல்
 const getPortalFromPath = () => {
 
   if (location.pathname.startsWith("/driver")) {

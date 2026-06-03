@@ -95,46 +95,81 @@ export default function Sidebar({
               <div key={item.id} className="mb-1">
                 {/* Parent Row Container */}
                 {hasChildren ? (
-                  <button
-                    onClick={() => toggleMenu(item.id)}
-                    className={`
-                      w-full
-                      flex
-                      items-center
-                      justify-between
-                      px-3
-                      py-3
-                      rounded-r-xl
-                      transition-all
-                      border-l-4
-                      ${textColor}
-                      ${
-                        openMenu === item.id
-                          ? `${activeClass} border-white font-semibold`
-                          : `border-transparent ${hoverClass}`
-                      }
-                    `}
-                  >
-                    <div className="flex items-center">
-                      <Icon
-                        size={20}
-                        className={collapsed ? "mx-auto" : "mr-3"}
-                      />
-                      {!collapsed && (
-                        <span className="font-medium text-sm">
-                          {item.label}
-                        </span>
-                      )}
-                    </div>
 
-                    {!collapsed &&
-                      (openMenu === item.id ? (
-                        <ChevronDown size={16} />
-                      ) : (
-                        <ChevronRight size={16} />
-                      ))}
-                  </button>
-                ) : (
+  <div
+    className={`
+      flex
+      items-center
+      justify-between
+
+      px-3
+      py-3
+
+      rounded-r-xl
+
+      transition-all
+
+      border-l-4
+
+      ${textColor}
+
+      ${
+        openMenu === item.id
+          ? `${activeClass} border-white font-semibold`
+          : `border-transparent ${hoverClass}`
+      }
+    `}
+  >
+
+    {/* CLICKABLE PAGE LINK */}
+
+    <NavLink
+      to={item.path}
+      onClick={() => setMobileOpen(false)}
+      className="
+        flex
+        items-center
+        flex-1
+      "
+    >
+
+      <Icon
+        size={20}
+        className={collapsed ? "mx-auto" : "mr-3"}
+      />
+
+      {!collapsed && (
+        <span className="font-medium text-sm">
+          {item.label}
+        </span>
+      )}
+
+    </NavLink>
+
+    {/* DROPDOWN BUTTON */}
+
+    {!collapsed && (
+
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleMenu(item.id);
+        }}
+      >
+
+        {openMenu === item.id ? (
+          <ChevronDown size={16} />
+        ) : (
+          <ChevronRight size={16} />
+        )}
+
+      </button>
+
+    )}
+
+  </div>
+
+) : (
                   <NavLink
                     to={item.path}
                     onClick={() => setMobileOpen(false)}
@@ -207,3 +242,4 @@ export default function Sidebar({
     </>
   );
 }
+

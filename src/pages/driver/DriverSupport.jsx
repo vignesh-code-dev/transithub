@@ -26,7 +26,8 @@ function DriverSupport() {
 
         <h1
           className="
-          text-3xl
+          text-2xl
+          leading-8
           font-bold
           text-[#1A1A2E]
           "
@@ -301,7 +302,7 @@ function DriverSupport() {
 
           <h2
             className="
-            text-xl
+            text-base
             font-semibold
             text-[#1A1A2E]
             "
@@ -391,7 +392,7 @@ function DriverSupport() {
 
           <h2
             className="
-            text-2xl
+            text-lg
             font-bold
             text-[#1A1A2E]
             "

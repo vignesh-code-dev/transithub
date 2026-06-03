@@ -30,7 +30,7 @@ from "../../data/rideRequestsData";
 import { driverDashboardData }
 from "../../data/driverDashboardData";
 
-function DriverDashboard() {
+function Overview() {
   const navigate = useNavigate();
 
   return (
@@ -710,4 +710,4 @@ bg-gradient-to-br from-white to-green-50
   );
 }
 
-export default DriverDashboard;
+export default Overview;

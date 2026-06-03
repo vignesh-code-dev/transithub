@@ -49,7 +49,8 @@ function TrainingMaterialCard({
 
       <h2
         className="
-        text-lg
+        text-base
+        leading-6
         font-semibold
         text-[#1A1A2E]
         "

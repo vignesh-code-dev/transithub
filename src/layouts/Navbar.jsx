@@ -1,6 +1,8 @@
 import { Bell, Search, Menu } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { PORTAL_THEME } from "../config/themeConfig";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function Navbar({
   collapsed,
@@ -10,7 +12,7 @@ export default function Navbar({
   menus = [],
 }) {
   const location = useLocation();
-
+  const navigate = useNavigate();
 const getPortalFromPath = () => {
 
   if (location.pathname.startsWith("/driver")) {
@@ -198,6 +200,9 @@ focus:ring-white
               transition
               ${theme.text}
             `}
+                      onClick={() => navigate('dashboard/notifications')}
+
+            
           >
             <Bell size={22} />
 
