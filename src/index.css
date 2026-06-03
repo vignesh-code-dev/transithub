@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import "leaflet/dist/leaflet.css";
 
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {

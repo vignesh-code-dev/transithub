@@ -18,24 +18,6 @@ export default function Navbar({
 
   const theme = PORTAL_THEME[currentPortal] || PORTAL_THEME.customer;
 
-  const findBreadcrumbs = (menusList, pathname, parentTrail = []) => {
-    for (const menu of menusList || []) {
-      if (menu.path === pathname) return [...parentTrail, menu];
-      if (menu.children) {
-        const childMatch = findBreadcrumbs(menu.children, pathname, [
-          ...parentTrail,
-          menu,
-        ]);
-        if (childMatch) return childMatch;
-      }
-    }
-    return null;
-  };
-
-  const breadcrumbTrail = findBreadcrumbs(menus, location.pathname) || [];
-  const activePageName = breadcrumbTrail.length
-    ? breadcrumbTrail[breadcrumbTrail.length - 1].label
-    : null;
 
   return (
     <header
@@ -93,13 +75,6 @@ export default function Navbar({
           >
             TransitHub
           </h1>
-
-          {/* Active Page Context Marker */}
-          {activePageName && (
-            <span className={`hidden md:inline-block ml-3 text-sm font-bold ${theme.text}`}>
-              {activePageName}
-            </span>
-          )}
         </div>
 
         {/* CENTER GLOBAL SEARCH */}
@@ -132,7 +107,7 @@ export default function Navbar({
                 h-10
                 pl-10
                 pr-4
-                rounded-xl
+                rounded-md
                 border
                 border-gray-200
                 bg-white

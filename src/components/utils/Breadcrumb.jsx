@@ -4,10 +4,19 @@ import { ChevronRight } from "lucide-react";
 export default function Breadcrumb({ menus = [] }) {
   const location = useLocation();
 
+  // URL-ன் இறுதியில் இருக்கும் தேவையற்ற ஸ்லாஷ்களை நீக்கி செக் செய்ய
+  const currentPathname = location.pathname.replace(/\/$/, "") || "/";
+
   // Helper calculation to pull matching route path sequences recursively
   const findBreadcrumbs = (menusList, pathname, parentTrail = []) => {
     for (const menu of menusList || []) {
-      if (menu.path === pathname) return [...parentTrail, menu];
+      // மெனு பாதையையும் சீராக்குகிறோம்
+      const menuPath = menu.path?.replace(/\/$/, "") || "/";
+
+      if (menuPath === pathname) {
+        return [...parentTrail, menu];
+      }
+      
       if (menu.children) {
         const childMatch = findBreadcrumbs(menu.children, pathname, [
           ...parentTrail,
@@ -19,10 +28,10 @@ export default function Breadcrumb({ menus = [] }) {
     return null;
   };
 
-  const trail = findBreadcrumbs(menus, location.pathname) || [];
+  const trail = findBreadcrumbs(menus, currentPathname) || [];
 
-  // Suppress rendering if level 1 base layer page view
-  if (trail.length <= 1) return null;
+  // Home பக்கத்தில் மட்டும் Breadcrumb தெரியாமல் இருக்க (அல்லது மெனு மேட்ச் ஆகவில்லை என்றால்)
+  if (currentPathname === "/" || trail.length === 0) return null;
 
   return (
     <nav className="flex items-center space-x-2 text-xs font-sans text-[#5D6D7E] mb-5">

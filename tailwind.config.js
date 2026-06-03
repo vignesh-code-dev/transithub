@@ -10,7 +10,14 @@ module.exports = {
         secondaryText: "#5D6D7E",
         border: "#E0E0E0",
 
-      
+        // custom colors for busowner portals
+        royalBlue: "#1565C0",
+        infoBusCard: "#E8F4FD",
+        seatAvailable: "#C8E6C9",
+        seatBooked: "#EF9A9A",
+        seatSelected: "#1565C0",
+        
+        
 
         // Custom colors for form states
 

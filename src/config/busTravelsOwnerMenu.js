@@ -26,14 +26,9 @@ export const busTravelsOwnerMenu = [
     id: "Bus Entry",
     label: "Bus Entry",
     icon: Bus,
+    path: "/bus-owner/buses",
 
     children: [
-      {
-        id: "bus-registration",
-        label: "Bus Registration",
-        icon: Bus,
-        path: "/bus-owner/buses",
-      },
       {
         id: "seat-layout",
         label: "Seat Layout Builder",

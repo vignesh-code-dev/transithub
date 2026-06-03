@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Menu, ChevronDown, ChevronRight, X } from "lucide-react";
 
 export default function Sidebar({
@@ -11,10 +11,30 @@ export default function Sidebar({
   theme,
 }) {
   const [openMenu, setOpenMenu] = useState(null);
+  const location = useLocation();
+
+  // பக்கம் மாறும்போது மொபைல் சைடுபாரை மூடுவதற்கு
+  const handleNavigation = () => {
+    setMobileOpen(false);
+  };
 
   const toggleMenu = (id) => {
     setOpenMenu(openMenu === id ? null : id);
   };
+
+  // தற்போதைய URL-ன் அடிப்படையில், எந்த சப்-மெனு ஓபனாக இருக்க வேண்டும் என்பதை ஆட்டோமேட்டிக்காகக் கண்டறிதல்
+  useEffect(() => {
+    menus.forEach((item) => {
+      if (item.children && item.children.length > 0) {
+        const isParentActive = location.pathname === item.path;
+        const isChildActive = item.children.some((child) => location.pathname === child.path);
+        
+        if (isParentActive || isChildActive) {
+          setOpenMenu(item.id);
+        }
+      }
+    });
+  }, [location.pathname, menus]);
 
   // Close mobile sidebar on pressing Escape
   useEffect(() => {
@@ -95,21 +115,26 @@ export default function Sidebar({
               <div key={item.id} className="mb-1">
                 {/* Parent Row Container */}
                 {hasChildren ? (
-                  <button
-                    onClick={() => toggleMenu(item.id)}
-                    className={`
+                  <NavLink
+                    to={item.path}
+                    end // <--- Exact URL மேட்ச் ஆவதற்கு இது முக்கியம்
+                    onClick={() => {
+                      handleNavigation();
+                      toggleMenu(item.id);
+                    }}
+                    className={({ isActive }) => `
                       w-full
                       flex
                       items-center
                       justify-between
                       px-3
                       py-3
-                      rounded-r-xl
+                      rounded
                       transition-all
                       border-l-4
                       ${textColor}
                       ${
-                        openMenu === item.id
+                        isActive && location.pathname === item.path
                           ? `${activeClass} border-white font-semibold`
                           : `border-transparent ${hoverClass}`
                       }
@@ -121,7 +146,7 @@ export default function Sidebar({
                         className={collapsed ? "mx-auto" : "mr-3"}
                       />
                       {!collapsed && (
-                        <span className="font-medium text-sm">
+                        <span className="font-medium text-[14px] leading-5">
                           {item.label}
                         </span>
                       )}
@@ -133,23 +158,24 @@ export default function Sidebar({
                       ) : (
                         <ChevronRight size={16} />
                       ))}
-                  </button>
+                  </NavLink>
                 ) : (
                   <NavLink
                     to={item.path}
-                    onClick={() => setMobileOpen(false)}
+                    end // <--- Exact URL மேட்ச் ஆவதற்கு இது முக்கியம்
+                    onClick={handleNavigation}
                     className={({ isActive }) => `
                       flex
                       items-center
                       px-3
                       py-3
-                      rounded-r-xl
+                      rounded
                       transition-all
                       border-l-4
                       ${textColor}
                       ${
-                        isActive
-                          ? `${activeClass} border-white font-bold`
+                        isActive && location.pathname === item.path
+                          ? `${activeClass} border-white`
                           : `border-transparent ${hoverClass}`
                       }
                     `}
@@ -159,7 +185,7 @@ export default function Sidebar({
                       className={collapsed ? "mx-auto" : "mr-3"}
                     />
                     {!collapsed && (
-                      <span className="text-sm font-medium">{item.label}</span>
+                      <span className="text-[14px] leading-5 font-medium">{item.label}</span>
                     )}
                   </NavLink>
                 )}
@@ -174,20 +200,22 @@ export default function Sidebar({
                         <NavLink
                           key={child.id}
                           to={child.path}
-                          onClick={() => setMobileOpen(false)}
+                          end
+                          onClick={handleNavigation}
                           className={({ isActive }) => `
                             flex
                             items-center
                             px-3
                             py-2
-                            rounded-r-xl
-                            text-xs
+                            rounded
+                            text-[12px]
+                            font-medium
                             transition-all
                             border-l-4
                             ${textColor}
                             ${
                               isActive
-                                ? `${activeClass} border-white font-bold`
+                                ? `${activeClass} border-white `
                                 : `border-transparent ${childHoverClass}`
                             }
                           `}
