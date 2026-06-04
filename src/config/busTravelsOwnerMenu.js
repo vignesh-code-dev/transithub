@@ -61,13 +61,8 @@ export const busTravelsOwnerMenu = [
     id: "booking-management",
     label: "Booking Management",
     icon: Ticket,
+    path: "/bus-owner/bookings",
     children: [
-      {
-        id: "booking-list",
-        label: "Booking List",
-        icon: Ticket,
-        path: "/bus-owner/bookings",
-      },
       {
         id: "passenger-manifest",
         label: "Passenger Manifest",
@@ -76,21 +71,9 @@ export const busTravelsOwnerMenu = [
       },
       {
         id: "manual-confirmation",
-        label: "Manual Confirmation",
+        label: "Booking Details",
         icon: MessageSquare,
-        path: "/bus-owner/manual-confirmation",
-      },
-      {
-        id: "cancellations",
-        label: "Cancellation Handling",
-        icon: AlertTriangle,
-        path: "/bus-owner/cancellations",
-      },
-      {
-        id: "eticket",
-        label: "E-Ticket Resend",
-        icon: FileText,
-        path: "/bus-owner/e-ticket",
+        path: "/bus-owner/bookingDetails",
       },
     ],
   },

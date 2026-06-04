@@ -87,7 +87,6 @@ export default function AvailabilityControl() {
     localStorage.setItem("registeredBuses", JSON.stringify(registeredBuses));
   }, [registeredBuses]);
 
-  // பஸ்சை தேர்வு செய்யும் போது பஸ் வகைக்கு ஏற்ப சீட்களை உருவாக்குதல்
   const handleSelectBusToControl = (bus) => {
     setSelectedBus(bus);
     setGlobalMessage("");
@@ -104,7 +103,6 @@ export default function AvailabilityControl() {
 
       let generatedSeats = [];
       if (bus.seatLayout === "Sleeper") {
-        // Sleeper பஸ்க்கு 12 லோயர் + 12 அப்பர் சீட்டுகள் (2+1 Layout-ல்)
         const decks = ["Lower", "Upper"];
         decks.forEach((deck) => {
           for (let i = 1; i <= 12; i++) {
@@ -121,7 +119,6 @@ export default function AvailabilityControl() {
           }
         });
       } else if (bus.seatLayout === "Semi-Sleeper") {
-        // Semi-Sleeper-க்கு 2+1 Layout (15 சீட்டுகள்)
         for (let i = 1; i <= 15; i++) {
           const row = Math.ceil(i / 3);
           const col = ((i - 1) % 3) + 1;
@@ -134,7 +131,6 @@ export default function AvailabilityControl() {
           });
         }
       } else {
-        // Regular Seater-க்கு 2+2 Layout (20 சீட்டுகள்)
         for (let i = 1; i <= 20; i++) {
           const row = Math.ceil(i / 4);
           const col = ((i - 1) % 4) + 1;
@@ -152,7 +148,7 @@ export default function AvailabilityControl() {
   };
 
   const toggleSeatBlock = (seatId) => {
-    if (tripStatus === "Closed") return; // முழு ட்ரிப் பிளாக் செய்யப்பட்டிருந்தால் சீட்களை மாற்ற முடியாது
+    if (tripStatus === "Closed") return;
     setCurrentBusSeats(
       currentBusSeats.map((seat) =>
         seat.id === seatId ? { ...seat, isBlocked: !seat.isBlocked } : seat,
@@ -427,7 +423,6 @@ export default function AvailabilityControl() {
                 </div>
               </div>
 
-              {/* முடக்கப்பட்ட ட்ரிப் என்றால் சீட் மேப் டிஸேபிள் ஆகும் */}
               <div
                 className={`w-full transition-all duration-300 ${tripStatus === "Closed" ? "opacity-30 pointer-events-none" : ""}`}
               >

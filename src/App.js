@@ -8,6 +8,9 @@ import SeatLayoutBuilder from "./pages/busTravels-owner/SeatLayoutBuilder";
 import RouteScheduleBuilder from "./pages/busTravels-owner/RouteScheduleBuilder";
 import PricingRulesBuilder from "./pages/busTravels-owner/PricingRulesBuilder";
 import AvailabilityControl from "./pages/busTravels-owner/AvailabilityControl";
+import BookingList from "./pages/busTravels-owner/BookingList";
+import Passengers from "./pages/busTravels-owner/Passengers";
+import BookingDetails from "./pages/busTravels-owner/BookingDetail";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import { busTravelsOwnerMenu } from "./config/busTravelsOwnerMenu";
 import "@fontsource/inter";
@@ -31,6 +34,9 @@ function App() {
           <Route path="/bus-owner/routes" element={<RouteScheduleBuilder />} />
           <Route path="/bus-owner/pricing" element={<PricingRulesBuilder />} />
           <Route path="/bus-owner/availability" element={<AvailabilityControl />} />
+          <Route path="/bus-owner/bookings" element={<BookingList />} />
+          <Route path="/bus-owner/passengers" element={<Passengers />} />
+          <Route path="/bus-owner/bookingDetails" element={<BookingDetails />} />
         </Route>
 
         <Route
